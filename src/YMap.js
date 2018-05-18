@@ -233,10 +233,12 @@ export default {
     },
     watch: {
         coordinates(newVal) {
+            this.$emit('coordinates-changed');
             this.myMap.setCenter && this.myMap.setCenter(newVal, this.zoom)
         },
         placemarks() {
             if (window.ymaps) {
+                this.$emit('reinit');
                 this.myMap.destroy && this.myMap.destroy();
                 this.init();
             }
@@ -311,5 +313,6 @@ export default {
     beforeDestroy() {
         this.myMap.GeoObjects && this.myMap.GeoObjects.removeAll();
         this.observer.disconnect();
+        this.$emit('destroyed');
     }
 }
